@@ -1,0 +1,20 @@
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+import 'package:riverpod_clean_architecture/features/{{name.snakeCase()}}/data/models/{{model.snakeCase()}}_model.dart';
+import 'package:riverpod_clean_architecture/features/{{name.snakeCase()}}/data/sources/{{model.snakeCase()}}_remote_source.dart';
+
+part 'gen/{{model.snakeCase()}}_repository.g.dart';
+
+/// Lite feature: concrete repository, no interface. Notifiers talk only to this,
+/// so caching/offline can be added here later (or promote the feature to full).
+class {{model.pascalCase()}}Repository {
+  {{model.pascalCase()}}Repository(this._remote);
+
+  final {{model.pascalCase()}}RemoteSource _remote;
+
+  Future<List<{{model.pascalCase()}}Model>> get{{model.pascalCase()}}List() => _remote.get{{model.pascalCase()}}List();
+}
+
+@riverpod
+{{model.pascalCase()}}Repository {{model.camelCase()}}Repository(Ref ref) =>
+    {{model.pascalCase()}}Repository(ref.watch({{model.camelCase()}}RemoteSourceProvider));

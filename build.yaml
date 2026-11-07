@@ -1,0 +1,32 @@
+﻿targets:
+  $default:
+    builders:
+      json_serializable:
+        options:
+          # API uses camelCase (DummyJSON). Switch to `snake` if your backend does.
+          field_rename: none
+          explicit_to_json: true
+      # Only scan files that can contain annotations, keeps `watch` fast.
+      riverpod_generator:
+        generate_for:
+          - lib/**.dart
+      go_router_builder:
+        generate_for:
+          - lib/app/router/**.dart
+
+      # Generated code goes in a gen/ folder next to its source:
+      #   models/product_model.dart        part 'gen/product_model.g.dart';
+      #   models/gen/product_model.g.dart  (riverpod, json, routes: combined)
+      #   models/gen/product_model.freezed.dart
+      source_gen:combining_builder:
+        generate_for:
+          exclude: ['lib/**/gen/**']
+        options:
+          build_extensions:
+            '^lib/{{dir}}/{{file}}.dart': 'lib/{{dir}}/gen/{{file}}.g.dart'
+      freezed:freezed:
+        generate_for:
+          exclude: ['lib/**/gen/**']
+        options:
+          build_extensions:
+            '^lib/{{dir}}/{{file}}.dart': 'lib/{{dir}}/gen/{{file}}.freezed.dart'

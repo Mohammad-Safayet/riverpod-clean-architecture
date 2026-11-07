@@ -1,0 +1,39 @@
+include: package:flutter_lints/flutter.yaml
+
+plugins:
+  riverpod_lint: ^3.1.9
+
+analyzer:
+  exclude:
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
+    - lib/gen/**
+    - lib/l10n/generated/**
+    - bricks/**
+    - build/**
+    - android/**
+    - ios/**
+    - web/**
+    - windows/**
+    - macos/**
+    - linux/**
+  errors:
+    invalid_annotation_target: ignore
+
+formatter:
+  page_width: 100
+
+linter:
+  rules:
+    - always_declare_return_types
+    - always_use_package_imports
+    - directives_ordering
+    - avoid_print
+    - prefer_const_constructors
+    - prefer_const_declarations
+    - prefer_final_locals
+    - prefer_single_quotes
+    - require_trailing_commas
+    - sort_child_properties_last
+    - unawaited_futures
+    - use_super_parameters

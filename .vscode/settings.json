@@ -1,0 +1,25 @@
+{
+  // Use the fvm-pinned SDK (.fvmrc), not the global Flutter.
+  "dart.flutterSdkPath": ".fvm/flutter_sdk",
+
+  // Generated code lives in gen/ folders next to its source (see build.yaml).
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.expand": false,
+  "explorer.fileNesting.patterns": {
+    "pubspec.yaml": "pubspec.lock, analysis_options.yaml, build.yaml, l10n.yaml, mason.yaml, .fvmrc, .metadata",
+    "README.md": "AGENTS.md, CLAUDE.md"
+  },
+
+  // Keep generated code out of search and quick open.
+  "search.exclude": {
+    "lib/**/gen/**": true,
+    "lib/l10n/generated/**": true,
+    ".fvm/**": true
+  },
+
+  "[dart]": {
+    "editor.formatOnSave": true,
+    "editor.rulers": [100]
+  },
+  "dart.lineLength": 100
+}

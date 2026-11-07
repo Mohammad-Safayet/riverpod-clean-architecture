@@ -1,0 +1,80 @@
+# FVM Version Cache
+.fvm/
+
+# Generated code: regenerate with `make gen` / `./setup.ps1`
+*.g.dart
+*.freezed.dart
+*.gr.dart
+*.mocks.dart
+lib/gen/
+lib/l10n/generated/
+
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.build/
+.buildlog/
+.history
+.svn/
+.swiftpm/
+migrate_working_dir/
+
+# IntelliJ / Android Studio (shared run configs in .run/ are committed)
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# VS Code: shared tasks/launch/settings are committed
+.vscode/*
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/settings.json
+!.vscode/extensions.json
+
+# Flutter/Dart/Pub related
+**/doc/api/
+**/ios/Flutter/.last_build_id
+.dart_tool/
+.flutter-plugins-dependencies
+.pub-cache/
+.pub/
+/build/
+/coverage/
+
+# Symbolication / obfuscation
+app.*.symbols
+app.*.map.json
+
+# Android
+/android/app/debug
+/android/app/profile
+/android/app/release
+/android/key.properties
+*.jks
+*.keystore
+
+# Fastlane / signing secrets
+**/fastlane/report.xml
+**/fastlane/Preview.html
+**/fastlane/screenshots
+**/fastlane/test_output
+**/fastlane/README.md
+*.p8
+*.p12
+*.mobileprovision
+play-store-credentials.json
+
+# Mason
+.mason/
+mason-lock.json
+
+# Claude Code: shared settings/skills are committed, personal ones are not
+.claude/settings.local.json
+
+# Mason hook build cache
+bricks/**/hooks/build/

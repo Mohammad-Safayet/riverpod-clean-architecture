@@ -1,0 +1,9 @@
+# Launcher icon for the dev flavor. Replace assets/launcher/icon_dev.png, then: make icons
+# iOS: after the first run, `dart run tool/ios_flavors.dart --flavor-icons` points each
+# flavor's build configs at its own AppIcon-<flavor> set.
+flutter_launcher_icons:
+  image_path: "assets/launcher/icon_dev.png"
+  android: true
+  ios: true
+  remove_alpha_ios: true
+  min_sdk_android: 21

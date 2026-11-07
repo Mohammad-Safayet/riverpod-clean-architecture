@@ -1,0 +1,57 @@
+# Run from ios/:  bundle exec fastlane <lane>
+# Needs the env vars listed in docs/architecture/release.md.
+
+default_platform(:ios)
+
+APP_ID = "latif.safayet.riverpod-clean-architecture"
+FLUTTER = ENV["FLUTTER"] || "fvm flutter"
+
+platform :ios do
+  before_all do
+    setup_ci if ENV["CI"]
+  end
+
+  def asc_api_key
+    app_store_connect_api_key(
+      key_id: ENV["ASC_KEY_ID"],
+      issuer_id: ENV["ASC_ISSUER_ID"],
+      key_content: ENV["ASC_KEY_P8_BASE64"],
+      is_key_content_base64: true
+    )
+  end
+
+  desc "Download signing certificates and profiles (read-only)"
+  lane :certs do
+    match(type: "appstore", readonly: true, api_key: asc_api_key)
+  end
+
+  desc "Build the prod flavor and upload it to TestFlight"
+  lane :deploy_beta do
+    api_key = asc_api_key
+    match(type: "appstore", readonly: true, api_key: api_key)
+
+    # Compile Dart + plugins with the prod flavor; Xcode signs and archives below.
+    sh("cd ../.. && #{FLUTTER} build ios --release --flavor prod -t lib/main_prod.dart --no-codesign --obfuscate --split-debug-info=build/symbols/ios")
+
+    update_code_signing_settings(
+      path: "Runner.xcodeproj",
+      use_automatic_signing: false,
+      targets: ["Runner"],
+      build_configurations: ["Release-prod"],
+      team_id: ENV["APPLE_TEAM_ID"],
+      code_sign_identity: "Apple Distribution",
+      profile_name: "match AppStore #{APP_ID}"
+    )
+
+    build_app(
+      workspace: "Runner.xcworkspace",
+      scheme: "prod",
+      configuration: "Release-prod",
+      export_method: "app-store",
+      export_options: { provisioningProfiles: { APP_ID => "match AppStore #{APP_ID}" } },
+      output_directory: "../build/ios/fastlane"
+    )
+
+    upload_to_testflight(api_key: api_key, skip_waiting_for_build_processing: true)
+  end
+end

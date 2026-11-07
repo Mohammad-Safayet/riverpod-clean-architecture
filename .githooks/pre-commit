@@ -1,0 +1,4 @@
+#!/bin/sh
+# Installed with `make hooks` / `./setup.ps1 hooks` (sets core.hooksPath=.githooks).
+# Uses the fvm-pinned Dart. Skip once with: git commit --no-verify
+exec fvm dart run tool/pre_commit.dart

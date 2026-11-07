@@ -1,0 +1,5 @@
+# Play Console service account key (JSON). CI writes it from a secret;
+# locally put it at android/play-store-credentials.json (gitignored).
+json_key_file(ENV["PLAY_STORE_JSON_KEY"] || "play-store-credentials.json")
+
+package_name("latif.safayet.riverpod_clean_architecture")

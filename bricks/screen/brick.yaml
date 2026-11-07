@@ -1,0 +1,21 @@
+name: screen
+description: A screen + notifier inside an existing feature.
+version: 0.1.0+1
+
+environment:
+  mason: ^0.1.0
+
+vars:
+  name:
+    type: string
+    description: Screen name without the "Screen" suffix (order_detail)
+    prompt: Screen name?
+  feature:
+    type: string
+    description: Existing feature folder under lib/features (orders)
+    prompt: Which feature?
+  stateful:
+    type: boolean
+    description: Extend BaseStatefulScreen (needs text/scroll/animation controllers)
+    default: false
+    prompt: Needs controllers (stateful)?

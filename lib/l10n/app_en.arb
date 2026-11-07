@@ -1,0 +1,75 @@
+{
+  "@@locale": "en",
+
+  "appName": "Riverpod CA",
+
+  "actionRetry": "Retry",
+  "actionCancel": "Cancel",
+  "actionOk": "OK",
+  "emptyList": "Nothing here yet",
+  "offlineBanner": "You're offline",
+
+  "validationRequired": "Required",
+  "validationEmail": "Enter a valid email address",
+  "validationPhone": "Enter a valid phone number",
+  "validationMinLength": "Must be at least {min} characters",
+  "@validationMinLength": {
+    "placeholders": {
+      "min": { "type": "int" }
+    }
+  },
+  "validationMaxLength": "Must be at most {max} characters",
+  "@validationMaxLength": {
+    "placeholders": {
+      "max": { "type": "int" }
+    }
+  },
+  "validationMismatch": "Doesn't match",
+
+  "errorNoInternet": "No internet connection. Check your network and try again.",
+  "errorNetwork": "Couldn't reach the server. Please try again.",
+  "errorTimeout": "The request took too long. Please try again.",
+  "errorUnauthorized": "Your session has expired. Please sign in again.",
+  "errorNotFound": "We couldn't find what you were looking for.",
+  "errorServiceUnavailable": "The service is temporarily unavailable. Please try again later.",
+  "errorGeneric": "Something went wrong. Please try again.",
+
+  "loginTitle": "Sign in",
+  "loginUsername": "Username",
+  "loginPassword": "Password",
+  "loginButton": "Sign in",
+
+  "navProducts": "Products",
+  "navSettings": "Settings",
+
+  "productsTitle": "Products",
+  "productPrice": "${price}",
+  "@productPrice": {
+    "placeholders": {
+      "price": { "type": "String" }
+    }
+  },
+  "productRating": "{rating} ★",
+  "@productRating": {
+    "placeholders": {
+      "rating": { "type": "String" }
+    }
+  },
+  "productStock": "{count} in stock",
+  "@productStock": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+
+  "settingsTitle": "Settings",
+  "settingsLanguage": "Language",
+  "settingsLogout": "Sign out",
+  "settingsLogoutConfirm": "Sign out of this device?",
+  "settingsEnvironment": "Environment: {name}",
+  "@settingsEnvironment": {
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  }
+}

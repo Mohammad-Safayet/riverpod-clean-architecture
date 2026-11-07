@@ -1,0 +1,45 @@
+{
+  "@@locale": "bn",
+
+  "appName": "রিভারপড সিএ",
+
+  "actionRetry": "আবার চেষ্টা করুন",
+  "actionCancel": "বাতিল",
+  "actionOk": "ঠিক আছে",
+  "emptyList": "এখানে এখনো কিছু নেই",
+  "offlineBanner": "আপনি অফলাইনে আছেন",
+
+  "validationRequired": "আবশ্যক",
+  "validationEmail": "সঠিক ইমেইল ঠিকানা দিন",
+  "validationPhone": "সঠিক ফোন নম্বর দিন",
+  "validationMinLength": "কমপক্ষে {min}টি অক্ষর হতে হবে",
+  "validationMaxLength": "সর্বোচ্চ {max}টি অক্ষর হতে পারে",
+  "validationMismatch": "মিলছে না",
+
+  "errorNoInternet": "ইন্টারনেট সংযোগ নেই। নেটওয়ার্ক চেক করে আবার চেষ্টা করুন।",
+  "errorNetwork": "সার্ভারে পৌঁছানো যায়নি। আবার চেষ্টা করুন।",
+  "errorTimeout": "অনুরোধে অনেক সময় লেগেছে। আবার চেষ্টা করুন।",
+  "errorUnauthorized": "আপনার সেশনের মেয়াদ শেষ। আবার সাইন ইন করুন।",
+  "errorNotFound": "আপনি যা খুঁজছেন তা পাওয়া যায়নি।",
+  "errorServiceUnavailable": "সেবাটি সাময়িকভাবে বন্ধ আছে। পরে আবার চেষ্টা করুন।",
+  "errorGeneric": "কিছু একটা ভুল হয়েছে। আবার চেষ্টা করুন।",
+
+  "loginTitle": "সাইন ইন",
+  "loginUsername": "ইউজারনেম",
+  "loginPassword": "পাসওয়ার্ড",
+  "loginButton": "সাইন ইন",
+
+  "navProducts": "পণ্য",
+  "navSettings": "সেটিংস",
+
+  "productsTitle": "পণ্য",
+  "productPrice": "${price}",
+  "productRating": "{rating} ★",
+  "productStock": "স্টকে {count}টি",
+
+  "settingsTitle": "সেটিংস",
+  "settingsLanguage": "ভাষা",
+  "settingsLogout": "সাইন আউট",
+  "settingsLogoutConfirm": "এই ডিভাইস থেকে সাইন আউট করবেন?",
+  "settingsEnvironment": "এনভায়রনমেন্ট: {name}"
+}

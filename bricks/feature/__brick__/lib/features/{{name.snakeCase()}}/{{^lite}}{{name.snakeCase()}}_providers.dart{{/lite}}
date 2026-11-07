@@ -1,0 +1,18 @@
+// Wiring for the {{name.snakeCase()}} feature: the only file that sees both data/ and domain/.
+// Presentation imports this (and domain/), never data/ directly.
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+import 'package:riverpod_clean_architecture/features/{{name.snakeCase()}}/data/repositories/{{model.snakeCase()}}_repository_impl.dart';
+import 'package:riverpod_clean_architecture/features/{{name.snakeCase()}}/data/sources/{{model.snakeCase()}}_remote_source.dart';
+import 'package:riverpod_clean_architecture/features/{{name.snakeCase()}}/domain/repositories/{{model.snakeCase()}}_repository.dart';
+import 'package:riverpod_clean_architecture/features/{{name.snakeCase()}}/domain/usecases/get_{{model.snakeCase()}}_list_usecase.dart';
+
+part 'gen/{{name.snakeCase()}}_providers.g.dart';
+
+@riverpod
+{{model.pascalCase()}}Repository {{model.camelCase()}}Repository(Ref ref) =>
+    {{model.pascalCase()}}RepositoryImpl(ref.watch({{model.camelCase()}}RemoteSourceProvider));
+
+@riverpod
+Get{{model.pascalCase()}}ListUseCase get{{model.pascalCase()}}ListUseCase(Ref ref) =>
+    Get{{model.pascalCase()}}ListUseCase(ref.watch({{model.camelCase()}}RepositoryProvider));

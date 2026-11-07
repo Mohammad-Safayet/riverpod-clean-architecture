@@ -1,0 +1,41 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      // Keeps *.g.dart / *.freezed.dart up to date while you code, including
+      // between hot reloads.
+      // - Starts when the folder opens (VS Code asks once to allow automatic tasks).
+      // - Every launch config uses it as preLaunchTask: started if not running,
+      //   reused if running, and the launch waits for the current build to finish.
+      // Don't run `build_runner build` while this runs: it stops the watcher.
+      "label": "build_runner: watch",
+      "type": "shell",
+      "command": "fvm dart run build_runner watch",
+      "isBackground": true,
+      "runOptions": { "runOn": "folderOpen" },
+      "presentation": { "reveal": "silent", "panel": "dedicated" },
+      "problemMatcher": {
+        "owner": "build_runner",
+        "fileLocation": ["relative", "${workspaceFolder}"],
+        "pattern": { "regexp": "^E (.+?):(\\d+):(\\d+): (.*)$", "file": 1, "line": 2, "column": 3, "message": 4 },
+        "background": {
+          "activeBegins": "^\\s*(\\d+s )?\\S+ on \\d+ inputs",
+          "endsPattern": "^\\s*(Built with build_runner|Failed to build)"
+        }
+      }
+    },
+    {
+      "label": "build_runner: build (once)",
+      "type": "shell",
+      "command": "fvm dart run build_runner build",
+      "problemMatcher": []
+    },
+    {
+      "label": "check (format, l10n, analyze, test)",
+      "type": "shell",
+      "command": "fvm dart run tool/format_check.dart && fvm dart run tool/l10n_check.dart && fvm dart analyze --fatal-infos && fvm flutter test",
+      "group": { "kind": "test", "isDefault": true },
+      "problemMatcher": []
+    }
+  ]
+}

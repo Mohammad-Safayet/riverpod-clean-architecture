@@ -1,0 +1,21 @@
+name: feature
+description: A feature folder following this template's architecture (full clean or lite).
+version: 0.1.0+1
+
+environment:
+  mason: ^0.1.0
+
+vars:
+  name:
+    type: string
+    description: Feature folder name, usually plural (orders, user_profile)
+    prompt: Feature name?
+  model:
+    type: string
+    description: Main model/entity, singular (order, user_profile)
+    prompt: Main model name (singular)?
+  lite:
+    type: boolean
+    description: "Lite = data + presentation only. Full = domain (entities, repository interface, use case) + data + presentation."
+    default: false
+    prompt: Lite feature (no domain layer)?

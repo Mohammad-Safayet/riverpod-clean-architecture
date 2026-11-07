@@ -1,0 +1,14 @@
+import 'package:riverpod_clean_architecture/features/{{name.snakeCase()}}/domain/entities/{{model.snakeCase()}}.dart';
+import 'package:riverpod_clean_architecture/features/{{name.snakeCase()}}/domain/repositories/{{model.snakeCase()}}_repository.dart';
+import 'package:riverpod_clean_architecture/features/{{name.snakeCase()}}/data/models/{{model.snakeCase()}}_model.dart';
+import 'package:riverpod_clean_architecture/features/{{name.snakeCase()}}/data/sources/{{model.snakeCase()}}_remote_source.dart';
+
+class {{model.pascalCase()}}RepositoryImpl implements {{model.pascalCase()}}Repository {
+  {{model.pascalCase()}}RepositoryImpl(this._remote);
+
+  final {{model.pascalCase()}}RemoteSource _remote;
+
+  @override
+  Future<List<{{model.pascalCase()}}>> get{{model.pascalCase()}}List() async =>
+      (await _remote.get{{model.pascalCase()}}List()).map((m) => m.toEntity()).toList();
+}

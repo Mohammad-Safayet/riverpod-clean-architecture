@@ -1,0 +1,12 @@
+# Certificates and profiles live encrypted in a private git repo (MATCH_GIT_URL),
+# shared by every machine and CI. First time, on a Mac:
+#   cd ios && bundle exec fastlane match appstore   (creates and stores them)
+git_url(ENV["MATCH_GIT_URL"])
+storage_mode("git")
+type("appstore")
+
+app_identifier([
+  "latif.safayet.riverpod-clean-architecture",
+  "latif.safayet.riverpod-clean-architecture.dev",
+  "latif.safayet.riverpod-clean-architecture.staging",
+])
