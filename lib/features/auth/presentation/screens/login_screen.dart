@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:riverpod_clean_architecture/core/base/base_screen.dart';
 import 'package:riverpod_clean_architecture/core/extensions/context_extensions.dart';
 import 'package:riverpod_clean_architecture/core/theme/app_values.dart';

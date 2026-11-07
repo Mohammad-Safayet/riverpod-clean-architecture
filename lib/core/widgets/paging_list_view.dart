@@ -10,7 +10,7 @@ import 'package:riverpod_clean_architecture/core/widgets/app_loading.dart';
 
 /// Infinite list for a `PaginatedNotifier`. Handles first-page loading/error,
 /// empty state, pull-to-refresh, loading the next page near the bottom, and the
-/// footer loader / retry. Port of the GetX template's `PagingView`.
+/// footer loader / retry, so screens only describe how one item looks.
 ///
 /// ```dart
 /// PagingListView<ProductModel>(

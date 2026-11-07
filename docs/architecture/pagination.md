@@ -1,6 +1,8 @@
 # Pagination
 
-Port of the GetX template's `PagingController` / `PagingView`, as owned code in `core/` (no package).
+Lists that load more items as the user scrolls ("infinite scroll") are built from a few small pieces that live in `core/`. There's no third-party pagination package: the code is short, you own it, and you can read or change it like any other file in the project.
+
+You write two things: a repository method that fetches one page, and a notifier that says how to call it. Loading the first page, fetching the next one near the bottom, pull-to-refresh, the empty state and retrying after an error are all handled for you.
 
 | Piece | File | Role |
 |---|---|---|

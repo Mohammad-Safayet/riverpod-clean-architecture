@@ -24,8 +24,8 @@ mixin BaseNotifier {
   Ref get ref;
 
   /// Runs [future] with the global loading overlay, catches every error, shows
-  /// it as a snackbar and returns `null` on failure. Same contract as the GetX
-  /// template's `callDataService`.
+  /// it as a snackbar and returns `null` on failure. On success it returns the
+  /// result and calls [onSuccess] (skipped if the notifier was disposed meanwhile).
   Future<T?> callDataService<T>(
     Future<T> future, {
     void Function(T result)? onSuccess,

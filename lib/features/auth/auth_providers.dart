@@ -1,7 +1,6 @@
 // Wiring for the auth feature: the only file that sees both data/ and domain/.
 // Presentation imports this (and domain/), never data/ directly.
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
 import 'package:riverpod_clean_architecture/core/session/session_notifier.dart';
 import 'package:riverpod_clean_architecture/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:riverpod_clean_architecture/features/auth/data/sources/auth_remote_source.dart';

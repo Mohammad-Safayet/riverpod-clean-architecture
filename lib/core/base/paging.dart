@@ -13,8 +13,9 @@ class PageResult<T> {
   final bool hasMore;
 }
 
-/// Everything a paginated list needs. Port of the GetX template's `PagingController`,
-/// but immutable so Riverpod can rebuild on change.
+/// Everything a paginated list needs: the items loaded so far, which page comes
+/// next, and whether a page is loading or failed. It is immutable, so every
+/// change produces a new state and Riverpod rebuilds the list.
 @immutable
 class PagingState<T> {
   const PagingState({

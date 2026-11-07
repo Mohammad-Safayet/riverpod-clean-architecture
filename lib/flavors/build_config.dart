@@ -21,6 +21,8 @@ class BuildConfig {
   }
 
   bool get isDev => environment == Environment.dev;
+
   bool get isStaging => environment == Environment.staging;
+
   bool get isProd => environment == Environment.prod;
 }
