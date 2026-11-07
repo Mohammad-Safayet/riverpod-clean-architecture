@@ -118,3 +118,7 @@ Ask your agent to run `start-project`, or by hand:
 3. **API**: per-flavor `baseUrl` in `main_*.dart`, error body in `core/network/error_mapper.dart`, refresh call in `core/network/interceptors/auth_interceptor.dart`.
 4. **Icons**: replace `assets/launcher/icon_*.png`, `make icons`.
 5. `fvm flutter clean && make setup && make check`.
+
+## License
+
+[MIT](LICENSE)
