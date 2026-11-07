@@ -5,6 +5,7 @@ import 'package:riverpod_clean_architecture/core/network/interceptors/auth_inter
 import 'package:riverpod_clean_architecture/core/network/interceptors/connectivity_interceptor.dart';
 import 'package:riverpod_clean_architecture/core/network/interceptors/network_log_interceptor.dart';
 import 'package:riverpod_clean_architecture/core/session/session_notifier.dart';
+import 'package:riverpod_clean_architecture/core/session/sign_in_prompt_notifier.dart';
 import 'package:riverpod_clean_architecture/core/session/token_storage.dart';
 import 'package:riverpod_clean_architecture/flavors/build_config.dart';
 
@@ -33,6 +34,7 @@ Dio dioClient(Ref ref) {
       tokenStorage: ref.read(tokenStorageProvider),
       plainDio: plainDio,
       onSessionExpired: () => ref.read(sessionProvider.notifier).expire(),
+      onSignInRequired: () => ref.read(signInPromptProvider.notifier).request(),
     ),
     NetworkLogInterceptor(logLevel),
   ]);

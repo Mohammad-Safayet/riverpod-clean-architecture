@@ -37,7 +37,7 @@ Go through every changed file against each group. A finding needs a concrete loc
 - Build methods stay readable (~60 lines); larger pieces become widgets in `presentation/widgets/`.
 
 **State (Riverpod)**
-- Page data: `AsyncNotifier` `build()` + `asyncBody`/`PagingListView`. Actions: notifier method with `callDataService`. `try/catch` in a widget is a finding.
+- Page data: `AsyncNotifier` `build()` + `asyncBody`/`PagingListView`. Actions: notifier method with `callDataService`; one that needs an account but lacks `requireSignIn()` is a finding. `try/catch` in a widget is a finding.
 - `ref.watch` in `build`, `ref.read` in callbacks and methods; `ref.mounted` checked before touching `state` after an `await` (outside the helpers).
 - No `BuildContext` or user-facing text built inside notifiers.
 - `keepAlive` only for app-wide state; per-screen state auto-disposes. Families for per-ID data.

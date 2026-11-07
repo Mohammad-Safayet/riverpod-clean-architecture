@@ -9,14 +9,33 @@ import 'package:riverpod_clean_architecture/flavors/build_config.dart';
 part 'gen/app_router.g.dart';
 
 /// Single place that decides where the user may go based on the session.
-String? sessionRedirect(SessionStatus status, String location) {
-  final atSplash = location == const SplashRoute().location;
-  final atLogin = location == const LoginRoute().location;
+///
+/// Guests browse public screens (`isPublicPath` in routes.dart); opening a
+/// protected one sends them to login with `from`, and signing in returns them there.
+String? sessionRedirect(SessionStatus status, Uri uri) {
+  final path = uri.path;
+  final splash = const SplashRoute().location;
+  final login = const LoginRoute().location;
+  final home = const ProductsRoute().location;
   return switch (status) {
-    SessionStatus.unknown => atSplash ? null : const SplashRoute().location,
-    SessionStatus.unauthenticated => atLogin ? null : const LoginRoute().location,
-    SessionStatus.authenticated => atSplash || atLogin ? const ProductsRoute().location : null,
+    SessionStatus.unknown => path == splash ? null : splash,
+    SessionStatus.unauthenticated when path == splash => home,
+    SessionStatus.unauthenticated when path == login || isPublicPath(path) => null,
+    SessionStatus.unauthenticated => LoginRoute(from: uri.toString()).location,
+    SessionStatus.authenticated when path == splash => home,
+    SessionStatus.authenticated when path == login => _returnPath(uri) ?? home,
+    SessionStatus.authenticated => null,
   };
+}
+
+/// The `from` of a login URI if it is an in-app path (not another site, not
+/// splash/login, which would loop).
+String? _returnPath(Uri loginUri) {
+  final from = loginUri.queryParameters['from'];
+  if (from == null || !from.startsWith('/') || from.startsWith('//')) return null;
+  final path = Uri.parse(from).path;
+  if (path == const SplashRoute().location || path == const LoginRoute().location) return null;
+  return from;
 }
 
 @Riverpod(keepAlive: true)
@@ -32,7 +51,7 @@ GoRouter router(Ref ref) {
     debugLogDiagnostics: BuildConfig.instance.isDev,
     refreshListenable: status,
     routes: $appRoutes,
-    redirect: (context, state) => sessionRedirect(status.value, state.matchedLocation),
+    redirect: (context, state) => sessionRedirect(status.value, state.uri),
   );
   ref.onDispose(router.dispose);
   return router;

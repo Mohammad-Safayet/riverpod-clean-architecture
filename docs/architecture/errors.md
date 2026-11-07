@@ -7,7 +7,7 @@ One sealed type, `AppException` (`core/exceptions/app_exception.dart`), is the o
 | `NoInternetException` | offline, rejected before sending (connectivity interceptor) |
 | `NetworkException` | DNS/socket/TLS failure |
 | `RequestTimeoutException` | connect/send/receive timeout |
-| `UnauthorizedException` | 401 after the refresh-token retry also failed (session already ended) |
+| `UnauthorizedException` | 401 after the refresh-token retry also failed (session already ended), or a guest called an endpoint that needs an account (login opens) |
 | `NotFoundException` | 404 |
 | `ServiceUnavailableException` | 5xx |
 | `ApiException` | any other non-2xx; `message` is the server's message |

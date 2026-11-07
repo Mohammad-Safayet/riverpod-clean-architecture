@@ -14,6 +14,14 @@ part 'gen/routes.g.dart';
 //   ProductDetailRoute(id: 5).push(context);
 // Path/query parameters are constructor fields, so they're checked at compile time.
 
+/// Screens a guest (signed-out user) may browse, with everything under them.
+/// Any other route needs a session: new routes are protected until listed here.
+final _publicPaths = [const ProductsRoute().location, const SettingsRoute().location];
+
+/// Whether a guest may open [path]. Used by `sessionRedirect` and by login's
+/// close button (going back to a protected `from` would bounce to login).
+bool isPublicPath(String path) => _publicPaths.any((p) => path == p || path.startsWith('$p/'));
+
 @TypedGoRoute<SplashRoute>(path: '/splash')
 class SplashRoute extends GoRouteData with $SplashRoute {
   const SplashRoute();
@@ -24,10 +32,15 @@ class SplashRoute extends GoRouteData with $SplashRoute {
 
 @TypedGoRoute<LoginRoute>(path: '/login')
 class LoginRoute extends GoRouteData with $LoginRoute {
-  const LoginRoute();
+  const LoginRoute({this.from});
+
+  /// Where to return after signing in or closing (query parameter). Always open
+  /// login with `go`, never `push`: a pushed route doesn't change the router's
+  /// location, so the redirect couldn't send the user back.
+  final String? from;
 
   @override
-  Widget build(BuildContext context, GoRouterState state) => const LoginScreen();
+  Widget build(BuildContext context, GoRouterState state) => LoginScreen(from: from);
 }
 
 @TypedStatefulShellRoute<MainShellRoute>(

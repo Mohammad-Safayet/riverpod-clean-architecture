@@ -4,6 +4,8 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:riverpod_clean_architecture/core/crash/crash_reporter.dart';
 import 'package:riverpod_clean_architecture/core/exceptions/app_exception.dart';
 import 'package:riverpod_clean_architecture/core/messages/app_messenger.dart';
+import 'package:riverpod_clean_architecture/core/session/session_notifier.dart';
+import 'package:riverpod_clean_architecture/core/session/sign_in_prompt_notifier.dart';
 import 'package:riverpod_clean_architecture/core/utils/app_logger.dart';
 
 /// Mix into any `@riverpod` notifier that runs user actions (login, submit, delete):
@@ -22,6 +24,23 @@ import 'package:riverpod_clean_architecture/core/utils/app_logger.dart';
 /// `AsyncValue` by `BaseScreen.asyncBody` instead.
 mixin BaseNotifier {
   Ref get ref;
+
+  /// Guard for actions that need an account (guests may browse but not act):
+  ///
+  /// ```dart
+  /// Future<void> addToCart(int id) async {
+  ///   if (!requireSignIn()) return;
+  ///   await callDataService(...);
+  /// }
+  /// ```
+  ///
+  /// Returns true when signed in. For a guest it opens login (returning to the
+  /// current screen afterwards) and returns false.
+  bool requireSignIn() {
+    if (ref.read(sessionProvider).status == SessionStatus.authenticated) return true;
+    ref.read(signInPromptProvider.notifier).request();
+    return false;
+  }
 
   /// Runs [future] with the global loading overlay, catches every error, shows
   /// it as a snackbar and returns `null` on failure. On success it returns the

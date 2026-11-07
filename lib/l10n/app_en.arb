@@ -29,7 +29,7 @@
   "errorNoInternet": "No internet connection. Check your network and try again.",
   "errorNetwork": "Couldn't reach the server. Please try again.",
   "errorTimeout": "The request took too long. Please try again.",
-  "errorUnauthorized": "Your session has expired. Please sign in again.",
+  "errorUnauthorized": "Please sign in to continue.",
   "errorNotFound": "We couldn't find what you were looking for.",
   "errorServiceUnavailable": "The service is temporarily unavailable. Please try again later.",
   "errorGeneric": "Something went wrong. Please try again.",

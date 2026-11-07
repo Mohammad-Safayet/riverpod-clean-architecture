@@ -42,12 +42,14 @@ void main() {
 
   late _MockTokenStorage tokens;
   late bool sessionExpired;
+  late int signInRequests;
 
   setUpAll(() => registerFallbackValue((accessToken: '', refreshToken: '')));
 
   setUp(() {
     tokens = _MockTokenStorage();
     sessionExpired = false;
+    signInRequests = 0;
     when(() => tokens.read()).thenAnswer((_) async => (accessToken: 'old', refreshToken: 'r1'));
     when(() => tokens.save(any())).thenAnswer((_) async {});
   });
@@ -61,6 +63,7 @@ void main() {
         tokenStorage: tokens,
         plainDio: plainDio,
         onSessionExpired: () async => sessionExpired = true,
+        onSignInRequired: () => signInRequests++,
       ),
     );
     return dio;
@@ -113,6 +116,21 @@ void main() {
     expect(sessionExpired, isTrue);
   });
 
+  test('a guest (no tokens) getting 401 is asked to sign in, without a refresh', () async {
+    when(() => tokens.read()).thenAnswer((_) async => null);
+    final api = _FakeAdapter((_) => (401, {}));
+    final refresh = _FakeAdapter((_) => (200, {'accessToken': 'new', 'refreshToken': 'r2'}));
+
+    await expectLater(
+      buildDio(api, refresh).get<dynamic>('/cart'),
+      throwsA(isA<DioException>().having(mapDioException, 'mapped', isA<UnauthorizedException>())),
+    );
+    expect(api.requests.single.headers['Authorization'], isNull);
+    expect(refresh.requests, isEmpty);
+    expect(signInRequests, 1);
+    expect(sessionExpired, isFalse);
+  });
+
   test('skipAuth requests get no token and no refresh', () async {
     final api = _FakeAdapter((_) => (401, {}));
     final refresh = _FakeAdapter((_) => (200, {'accessToken': 'new', 'refreshToken': 'r2'}));
@@ -126,5 +144,6 @@ void main() {
     );
     expect(api.requests.single.headers['Authorization'], isNull);
     expect(refresh.requests, isEmpty);
+    expect(signInRequests, 0);
   });
 }

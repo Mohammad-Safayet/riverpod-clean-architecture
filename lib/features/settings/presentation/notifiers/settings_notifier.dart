@@ -11,6 +11,6 @@ class SettingsNotifier extends _$SettingsNotifier with BaseNotifier {
   @override
   void build() {}
 
-  /// The router sends the user to login once the session ends.
+  /// The user stays on settings as a guest once the session ends.
   Future<void> logout() => callDataService(ref.read(sessionProvider.notifier).end());
 }

@@ -35,10 +35,33 @@ Then `make gen`.
 
 ## Session redirect
 
-`sessionRedirect(status, location)` in `app_router.dart` is the single access rule:
+The app is **open to browse, login to act**: guests (signed out) see public screens, and anything that needs an account asks them to sign in, then brings them back.
+
+`sessionRedirect(status, uri)` in `app_router.dart` is the single access rule:
 
 - `unknown` (restoring tokens at startup) → `/splash`
-- `unauthenticated` → `/login`
-- `authenticated` on splash/login → `/products`
+- `unauthenticated` on splash → `/products`; on a public path or login → stays; on any other path → `/login?from=<that path>`
+- `authenticated` on splash → `/products`; on login → `from` (if it is an in-app path) or `/products`
 
-The router listens to `sessionProvider` status through a `ValueNotifier`, so it re-runs redirect without being rebuilt. Login/logout never navigate by hand: they change the session and the redirect moves the user. Public screens that need no login: allow their location in `sessionRedirect` and add a case to `test/app/router/session_redirect_test.dart`.
+Public paths are listed in `_publicPaths` in `routes.dart`, read through `isPublicPath` (each one includes everything under it: `/products` covers `/products/5`). **New routes are protected until you add them there**, so forgetting is safe. Add a case to `test/app/router/session_redirect_test.dart` with every change.
+
+The router listens to `sessionProvider` status through a `ValueNotifier`, so it re-runs redirect without being rebuilt. Login/logout never navigate by hand: they change the session and the redirect moves the user. Signing out on a public screen leaves the user there as a guest.
+
+### Actions that need an account
+
+Screens stay public; the action is what's gated. In the notifier:
+
+```dart
+Future<void> addToCart(int id) async {
+  if (!requireSignIn()) return; // from BaseNotifier
+  await callDataService(...);
+}
+```
+
+For a guest, `requireSignIn()` raises `signInPromptProvider` (`core/session/`); `App` listens and goes to `LoginRoute(from: <current location>)`. After sign-in the redirect sends them back to `from`. The close button on login goes back to `from` without signing in, or home when `from` isn't public (a guest would bounce straight back to login).
+
+**Open login with `go` and `from`, never `push`**, e.g. `LoginRoute(from: const SettingsRoute().location).go(context)`. A pushed route doesn't change the router's location, so the redirect can't see it, and popping it from a session listener doesn't work either: the router's refresh on the same session change restores the pushed route. With `go`, the redirect is the only thing that moves the user. `test/app/router/guest_flow_test.dart` covers these flows through the real `App`.
+
+A guest's request that gets 401 (an endpoint that needs an account) raises the same prompt from the auth interceptor, as a safety net for actions not guarded with `requireSignIn()`.
+
+UI can also adapt to guests with `currentUser(ref)` (null when signed out), as settings does with its sign-in / sign-out tiles.

@@ -4,6 +4,8 @@ import 'package:riverpod_clean_architecture/core/base/base_notifier.dart';
 import 'package:riverpod_clean_architecture/core/exceptions/app_exception.dart';
 import 'package:riverpod_clean_architecture/core/messages/app_message.dart';
 import 'package:riverpod_clean_architecture/core/messages/app_messenger.dart';
+import 'package:riverpod_clean_architecture/core/session/session_notifier.dart';
+import 'package:riverpod_clean_architecture/core/session/sign_in_prompt_notifier.dart';
 import 'package:riverpod_clean_architecture/core/utils/provider_retry.dart';
 
 import '../../helpers/test_app.dart';
@@ -55,4 +57,36 @@ void main() {
     final message = container.read(appMessengerProvider)! as ErrorMessage;
     expect(message.exception, isA<UnknownException>());
   });
+
+  group('requireSignIn', () {
+    ProviderContainer withSession(SessionStatus status) {
+      final c = ProviderContainer(
+        retry: noProviderRetry,
+        overrides: [sessionProvider.overrideWith(() => _FakeSession(status))],
+      );
+      addTearDown(c.dispose);
+      return c;
+    }
+
+    test('signed in: allows the action and prompts nothing', () {
+      final c = withSession(SessionStatus.authenticated);
+      expect(c.read(_provider.notifier).requireSignIn(), isTrue);
+      expect(c.read(signInPromptProvider), 0);
+    });
+
+    test('guest: blocks the action and asks the app to open login', () {
+      final c = withSession(SessionStatus.unauthenticated);
+      expect(c.read(_provider.notifier).requireSignIn(), isFalse);
+      expect(c.read(signInPromptProvider), 1);
+    });
+  });
+}
+
+class _FakeSession extends SessionNotifier {
+  _FakeSession(this.status);
+
+  final SessionStatus status;
+
+  @override
+  SessionState build() => SessionState(status: status);
 }

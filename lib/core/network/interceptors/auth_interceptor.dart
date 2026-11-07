@@ -5,7 +5,7 @@ import 'package:riverpod_clean_architecture/core/session/token_storage.dart';
 import 'package:riverpod_clean_architecture/core/utils/app_logger.dart';
 
 /// Adds `Authorization: Bearer <token>` and, on 401, refreshes the token once
-/// and retries the request.
+/// and retries the request. A guest (no tokens) who gets 401 is asked to sign in.
 ///
 /// It's a [QueuedInterceptor], so when several requests fail with 401 at the same
 /// time only the first one refreshes; the rest wait and reuse the new token.
@@ -14,6 +14,7 @@ class AuthInterceptor extends QueuedInterceptor {
     required TokenStorage tokenStorage,
     required this._plainDio,
     required this._onSessionExpired,
+    required this._onSignInRequired,
   }) : _tokens = tokenStorage;
 
   final TokenStorage _tokens;
@@ -23,6 +24,9 @@ class AuthInterceptor extends QueuedInterceptor {
   /// retry's own error behind the one waiting for it, and deadlock.
   final Dio _plainDio;
   final Future<void> Function() _onSessionExpired;
+
+  /// Called when a request made without a session gets 401: the endpoint needs an account.
+  final void Function() _onSignInRequired;
 
   static const _skipAuthKey = 'skip_auth';
 
@@ -46,7 +50,10 @@ class AuthInterceptor extends QueuedInterceptor {
     }
 
     final current = await _tokens.read();
-    if (current == null) return handler.next(err);
+    if (current == null) {
+      _onSignInRequired();
+      return handler.next(err);
+    }
 
     // Another queued request may have refreshed already.
     if (options.headers['Authorization'] != 'Bearer ${current.accessToken}') {

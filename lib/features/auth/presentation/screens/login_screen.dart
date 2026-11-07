@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:riverpod_clean_architecture/app/router/routes.dart';
 import 'package:riverpod_clean_architecture/core/base/base_screen.dart';
 import 'package:riverpod_clean_architecture/core/extensions/context_extensions.dart';
 import 'package:riverpod_clean_architecture/core/theme/app_values.dart';
@@ -7,7 +9,10 @@ import 'package:riverpod_clean_architecture/core/utils/validators.dart';
 import 'package:riverpod_clean_architecture/features/auth/presentation/notifiers/login_notifier.dart';
 
 class LoginScreen extends BaseStatefulScreen {
-  const LoginScreen({super.key});
+  const LoginScreen({super.key, this.from});
+
+  /// The screen to go back to (see `LoginRoute.from`).
+  final String? from;
 
   @override
   BaseScreenState<LoginScreen> createState() => _LoginScreenState();
@@ -29,6 +34,24 @@ class _LoginScreenState extends BaseScreenState<LoginScreen> {
     if (!_formKey.currentState!.validate()) return;
     FocusScope.of(context).unfocus();
     ref.read(loginProvider.notifier).login(username: _username.text, password: _password.text);
+  }
+
+  /// Guests can leave login and keep browsing: back to `from` when a guest may
+  /// see it, otherwise home. (Signing in needs nothing here: the session
+  /// changes and the redirect sends the user to `from`.)
+  @override
+  PreferredSizeWidget? appBar(BuildContext context, WidgetRef ref) => AppBar(
+    leading: IconButton(
+      icon: const Icon(Icons.close),
+      tooltip: MaterialLocalizations.of(context).closeButtonTooltip,
+      onPressed: () => context.go(_closeTarget),
+    ),
+  );
+
+  String get _closeTarget {
+    final from = widget.from;
+    if (from != null && from.startsWith('/') && isPublicPath(Uri.parse(from).path)) return from;
+    return const ProductsRoute().location;
   }
 
   @override

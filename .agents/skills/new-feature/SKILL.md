@@ -45,7 +45,7 @@ Replace every placeholder (`id`/`name` fields, the `TODO`s) with the real thing:
 3. `data/sources/*_remote_source.dart`: one method per endpoint, each through `callApi(request, parse)`.
 4. Full only: `domain/entities` (what the UI needs, not the JSON), `toEntity()`, repository interface, use cases (one per action; add rules here), `<name>_providers.dart`.
 5. Repository: maps/combines, returns models (lite) or entities (full).
-6. Notifier: page data in `build()`; paginated lists use `PaginatedNotifier` (`docs/architecture/pagination.md`); user actions are methods using `callDataService` (add `with BaseNotifier`).
+6. Notifier: page data in `build()`; paginated lists use `PaginatedNotifier` (`docs/architecture/pagination.md`); user actions are methods using `callDataService` (add `with BaseNotifier`); an action that needs an account starts with `if (!requireSignIn()) return;`. Public (guest-browsable) screens: add their path to `_publicPaths` in `app/router/routes.dart`, otherwise the route is login-only.
 7. Screen: `BaseScreen` hooks, `asyncBody(...)` for page data, `context.l10n` / `context.colors` / `context.textStyles` / `AppValues` for everything visual. Extract widgets into `presentation/widgets/` once a build method passes ~60 lines.
 
 Done: no `TODO` or placeholder field left in the new files; `make gen` succeeds.

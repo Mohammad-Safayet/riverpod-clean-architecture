@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_clean_architecture/app/router/routes.dart';
 import 'package:riverpod_clean_architecture/core/base/base_screen.dart';
 import 'package:riverpod_clean_architecture/core/extensions/context_extensions.dart';
 import 'package:riverpod_clean_architecture/core/l10n/locale_notifier.dart';
@@ -30,6 +31,12 @@ class SettingsScreen extends BaseScreen {
             leading: AppAvatar(url: user.imageUrl, name: user.fullName),
             title: Text(user.fullName, style: context.textStyles.title),
             subtitle: Text(user.email, style: context.textStyles.caption),
+          )
+        else
+          ListTile(
+            leading: const Icon(Icons.login),
+            title: Text(l10n.loginButton),
+            onTap: () => LoginRoute(from: const SettingsRoute().location).go(context),
           ),
         const Divider(),
         ListTile(
@@ -50,11 +57,12 @@ class SettingsScreen extends BaseScreen {
             },
           ),
         ),
-        ListTile(
-          leading: Icon(Icons.logout, color: context.colors.error),
-          title: Text(l10n.settingsLogout, style: TextStyle(color: context.colors.error)),
-          onTap: () => _confirmLogout(context, ref),
-        ),
+        if (user != null)
+          ListTile(
+            leading: Icon(Icons.logout, color: context.colors.error),
+            title: Text(l10n.settingsLogout, style: TextStyle(color: context.colors.error)),
+            onTap: () => _confirmLogout(context, ref),
+          ),
         const Divider(),
         ListTile(
           title: Text(

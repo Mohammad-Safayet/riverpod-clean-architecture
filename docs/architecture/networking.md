@@ -49,7 +49,7 @@ Public endpoints (no token): `options: Options(extra: AuthInterceptor.skipAuth)`
 
 - Tokens: `core/session/token_storage.dart` (flutter_secure_storage, cached in memory).
 - Session: `core/session/session_notifier.dart` (`sessionProvider`): status `unknown → authenticated | unauthenticated` and the `SessionUser`. The router redirects on status.
-- On 401 the auth interceptor (a `QueuedInterceptor`, so concurrent 401s refresh once) calls `/auth/refresh` with a plain Dio, saves the new tokens and retries the request on the plain Dio. If refresh fails it calls `session.expire()` and the request fails with `UnauthorizedException`; the router sends the user to login.
+- On 401 the auth interceptor (a `QueuedInterceptor`, so concurrent 401s refresh once) calls `/auth/refresh` with a plain Dio, saves the new tokens and retries the request on the plain Dio. If refresh fails it calls `session.expire()` and the request fails with `UnauthorizedException`; the router sends the user to login if the screen is protected (a public screen stays, as a guest). A 401 on a request made with no tokens (a guest) skips the refresh and asks the app to open login (`signInPromptProvider`; see `routing.md`).
 - **Adapt to your backend**: the refresh request body/response keys in `AuthInterceptor._refresh`, and `ApiEndpoints.refreshToken`.
 
 Retries go through the plain Dio on purpose: going back through the queued interceptor would put the retry's own error behind the one waiting for it, and deadlock. `test/core/network/auth_interceptor_test.dart` covers this.

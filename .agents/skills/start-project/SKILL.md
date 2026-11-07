@@ -45,8 +45,8 @@ For each feature to drop, remove everything that references it, then let the com
 
 Special cases:
 
-- **Dropping `products`** (the post-login home): change the `authenticated` target in `sessionRedirect` (`app/router/app_router.dart`) to the new home route and update `test/app/router/session_redirect_test.dart`.
-- **Dropping `auth`** (no login in the app): make `sessionRedirect` send `unauthenticated` users to the home route instead of login (keep `core/session/`: the interceptor and settings use it), remove the logout tile from settings, and update the redirect test. Keep `AuthInterceptor` only if the API still uses tokens.
+- **Dropping `products`** (the home screen): change `home` in `sessionRedirect` (`app/router/app_router.dart`) and the entry in `_publicPaths` (`app/router/routes.dart`) to the new home route, point the login close button (`login_screen.dart`) there, and update `test/app/router/session_redirect_test.dart`.
+- **Dropping `auth`** (no login in the app): make `sessionRedirect` let `unauthenticated` users through everywhere (keep `core/session/`: the interceptor and settings use it), remove the sign-in/sign-out tiles from settings, the `signInPromptProvider` listener in `app/app.dart` and `LoginRoute`, and update the redirect test. Keep `AuthInterceptor` only if the API still uses tokens.
 - **Dropping everything**: keep `main/` with one placeholder tab, or replace the shell route with a single home route.
 
 Done: `make gen` succeeds and `fvm dart analyze` reports no errors.
